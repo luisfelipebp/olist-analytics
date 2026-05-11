@@ -1,0 +1,32 @@
+version: 2
+
+models:
+  # ======================
+  # MARTS DE VENDAS
+  # ======================
+  - name: total_orders
+    description: "Contagem distinta de pedidos (order_sk). Indica o volume de transações."
+    tests:
+      - not_null
+
+  - name: gmv
+    description: >
+      Gross Merchandise Volume (Volume Bruto de Mercadorias).
+    tests:
+      - not_null
+      - dbt_utils.expression_is_true:
+          expression: ">= 0"
+
+  - name: total_freight_revenue
+    description: "Soma do valor pago em frete."
+    tests:
+      - not_null
+      - dbt_utils.expression_is_true:
+          expression: ">= 0"
+
+  - name: avg_ticket
+    description: "Ticket Médio."
+    tests:
+      - not_null
+      - dbt_utils.expression_is_true:
+          expression: ">= 0"

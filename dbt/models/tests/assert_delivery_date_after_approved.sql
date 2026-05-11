@@ -1,0 +1,1 @@
+select order_id, order_approved_at, order_delivered_customer_date from {{ref('stg_olist_orders')}} where order_approved_at > order_delivered_customer_date

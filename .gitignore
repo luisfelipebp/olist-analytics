@@ -1,0 +1,99 @@
+# =========================
+# Python
+# =========================
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environment
+venv/
+.venv/
+env/
+
+# =========================
+# Airflow
+# =========================
+airflow/logs/
+airflow/airflow.db
+airflow/webserver_config.py
+airflow/standalone_admin_password.txt
+
+# =========================
+# dbt
+# =========================
+dbt_packages/
+target/
+logs/
+dbt.log
+
+# dbt profiles
+profiles.yml
+
+# =========================
+# Environment Variables
+# =========================
+.env
+.env.*
+
+# =========================
+# Jupyter
+# =========================
+.ipynb_checkpoints/
+
+# =========================
+# VS Code
+# =========================
+.vscode/
+
+# =========================
+# MacOS / Linux / Windows
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# Docker
+# =========================
+docker-data/
+postgres-data/
+*.pid
+
+# =========================
+# Logs
+# =========================
+*.log
+
+# =========================
+# Temporary Files
+# =========================
+tmp/
+temp/
+*.tmp
+
+# =========================
+# CSV Raw Files (optional)
+# =========================
+# Descomente se não quiser subir datasets
+# data/*.csv
+
+# =========================
+# Pytest / Coverage
+# =========================
+.pytest_cache/
+.coverage
+htmlcov/
+
+# =========================
+# Build
+# =========================
+dist/
+build/
+*.egg-info/
+
+# =========================
+# Secrets / Credentials
+# =========================
+secrets/
+credentials/
+*.pem
+*.key

@@ -1,0 +1,67 @@
+services:
+  pgdatabase:
+    image: postgres:17
+    shm_size: '256mb' 
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+    volumes:
+      - olist_analytics_postgres_data:/var/lib/postgresql/data
+      - ./data:/tmp/data
+      - ./init-scripts:/docker-entrypoint-initdb.d 
+    ports:
+      - "${DB_PORT}:${DB_PORT}"
+  dbeaver:
+    image: dbeaver/cloudbeaver
+    restart: always
+    depends_on:
+      - pgdatabase
+    volumes:
+      - olist_dbeaver_data:/opt/cloudbeaver/workspace
+    ports:
+      - "8080:8978"
+  airflow:
+    build: .
+    container_name: airflow_olist
+    depends_on:
+      - pgdatabase
+    volumes: 
+      - ./dags:/opt/airflow/dags
+      - ./dbt:/opt/airflow/dbt
+      - ./data:/tmp/data
+    ports:
+      - "8081:8080"
+    environment:
+      - AIRFLOW__CORE__LOAD_EXAMPLES=false
+      - AIRFLOW__CORE__EXECUTOR=LocalExecutor
+      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://${DB_USER}:${DB_PASSWORD}@pgdatabase:5432/airflow_db
+      - AIRFLOW_CONN_METABASE_DB=postgresql://${DB_USER}:${DB_PASSWORD}@pgdatabase:5432/${MB_DB_DBNAME}
+      - AIRFLOW_CONN_OLIST_DB=postgresql://${DB_USER}:${DB_PASSWORD}@pgdatabase:5432/${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - DB_HOST=pgdatabase
+      - DB_PORT=5432
+    command: standalone
+    
+  metabase:
+    image: metabase/metabase:latest
+    container_name: metabase_olist
+    environment:
+      - MB_DB_TYPE=postgres
+      - MB_DB_DBNAME=${MB_DB_DBNAME}
+      - MB_DB_PORT=5432
+      - MB_DB_USER=${DB_USER}
+      - MB_DB_PASS=${DB_PASSWORD}
+      - MB_DB_HOST=pgdatabase
+    ports:
+      - "3000:3000"
+    depends_on:
+      - pgdatabase
+
+volumes:
+  olist_analytics_postgres_data:
+  olist_dbeaver_data:
+
+

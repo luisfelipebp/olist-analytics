@@ -1,0 +1,158 @@
+version: 2
+
+models:
+
+  # ======================
+  # ORDERS
+  # ======================
+  - name: stg_olist_orders
+    description: "Pedidos do Olist com tipagem aplicada."
+
+    columns:
+      - name: order_id
+        description: "Chave natural do pedido."
+        tests: [not_null, unique]
+
+      - name: customer_id
+        description: "Cliente do pedido."
+        tests: [not_null]
+
+      - name: order_status
+        description: "Status do pedido."
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['processing','approved','created','delivered','shipped','canceled','invoiced','unavailable']
+
+      - name: order_purchase_timestamp
+        tests: [not_null]
+
+      - name: order_approved_at
+      - name: order_delivered_carrier_date
+      - name: order_delivered_customer_date
+      - name: order_estimated_delivery_date
+
+
+  # ======================
+  # ORDER ITEMS
+  # ======================
+  - name: stg_olist_order_items
+    description: "Itens dos pedidos (grão: 1 linha por item)."
+
+    columns:
+      - name: order_id
+        tests: [not_null]
+
+      - name: order_item_id
+        description: "Sequencial do item dentro do pedido."
+        tests: [not_null]
+
+      - name: product_id
+        tests: [not_null]
+
+      - name: seller_id
+        tests: [not_null]
+
+      - name: price
+        tests: [not_null]
+
+      - name: freight_value
+        tests: [not_null]
+
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['order_id', 'order_item_id']
+
+
+  # ======================
+  # PAYMENTS
+  # ======================
+  - name: stg_olist_order_payments
+    description: "Pagamentos dos pedidos (grão: 1 pagamento por linha)."
+
+    columns:
+      - name: order_id
+        tests: [not_null]
+
+      - name: payment_sequential
+        description: "Sequencial do pagamento dentro do pedido."
+        tests: [not_null]
+
+      - name: payment_type
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['credit_card','boleto','voucher','debit_card', 'not_defined']
+
+      - name: payment_installments
+        tests: [not_null]
+
+      - name: payment_value
+        tests: [not_null]
+
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['order_id', 'payment_sequential']
+
+
+  # ======================
+  # PRODUCTS
+  # ======================
+  - name: stg_olist_products
+    description: "Produtos do Olist."
+
+    columns:
+      - name: product_id
+        tests: [not_null, unique]
+
+      - name: product_category_name
+
+      - name: product_weight_g
+      - name: product_length_cm
+      - name: product_height_cm
+      - name: product_width_cm
+
+
+  # ======================
+  # CUSTOMERS
+  # ======================
+  - name: stg_olist_customers
+    description: "Clientes do Olist."
+
+    columns:
+      - name: customer_id
+        tests: [not_null, unique]
+
+      - name: customer_unique_id
+        description: "Identificador único do cliente (mesma pessoa pode ter vários customer_id)."
+        tests: [not_null]
+
+      - name: customer_city
+      - name: customer_state
+
+
+  # ======================
+  # SELLERS
+  # ======================
+  - name: stg_olist_sellers
+    description: "Vendedores do Olist."
+
+    columns:
+      - name: seller_id
+        tests: [not_null, unique]
+
+      - name: seller_city
+      - name: seller_state
+
+
+  # ======================
+  # CATEGORY TRANSLATION
+  # ======================
+  - name: stg_product_category
+    description: "Tabela de tradução de categoria de produto."
+
+    columns:
+      - name: product_category_name
+        tests: [not_null, unique]
+
+      - name: product_category_name_english
