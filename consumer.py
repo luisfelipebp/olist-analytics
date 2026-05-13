@@ -47,7 +47,7 @@ consumer = KafkaConsumer(
     value_deserializer=lambda x: json.loads(x.decode("utf-8"))
 )
 
-print("🎧 Aguardando mensagens no tópico 'olist.order_events'...")
+print("Aguardando mensagens no tópico 'olist.order_events'...")
 
 try:
     while True:
@@ -86,13 +86,13 @@ try:
         
         consumer.commit()
         
-        print(f"📦 Lote de {len(registros_para_inserir)} eventos inserido no Postgres com sucesso!")
+        print(f"Lote de {len(registros_para_inserir)} eventos inserido no Postgres com sucesso!")
 
 except KeyboardInterrupt:
     print("\nConsumo interrompido pelo usuário (Ctrl+C).")
 finally:
-    print("⏳ Fechando conexões...")
+    print("Fechando conexões...")
     consumer.close()
     cursor.close()
     connection.close()
-    print("✅Desligamento concluído.")
+    print("Desligamento concluído.")

@@ -32,7 +32,7 @@ producer = KafkaProducer(
 cursor.execute("SELECT * FROM marts.fct_orders LIMIT 100")
 orders = cursor.fetchall()
 
-print(f"🚀 Iniciando a simulação de {len(orders)} pedidos...")
+print(f"Iniciando a simulação de {len(orders)} pedidos...")
 
 try:
     for order in orders:
@@ -61,9 +61,9 @@ except KeyboardInterrupt:
     print("\nSimulação interrompida pelo usuário (Ctrl+C).")
 
 finally:
-    print("⏳ Aguardando o envio das mensagens no buffer...")
+    print("Aguardando o envio das mensagens no buffer...")
     producer.flush()
     producer.close()
     cursor.close()
     connection.close()
-    print("✅ Desligamento concluído. Bye!")
+    print("Desligamento concluído.")
