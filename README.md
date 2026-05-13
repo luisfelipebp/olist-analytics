@@ -203,8 +203,14 @@ cd olist-analytics
 
 ### 2. Configure as variáveis de ambiente
 
+Se estiver usando Linux/Mac ou Git Bash, você pode rodar:
 ```bash
 cp .env.example .env
+```
+
+Se estiver usando Windows CMD:
+```bash
+copy .env.example .env
 ```
 
 Edite o `.env`:
