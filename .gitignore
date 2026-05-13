@@ -35,6 +35,8 @@ profiles.yml
 .env
 .env.*
 
+!.env.example
+
 # =========================
 # Jupyter
 # =========================
