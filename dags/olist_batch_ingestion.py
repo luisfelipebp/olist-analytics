@@ -22,19 +22,19 @@ def ingest_with_logging(file_name, file_path, **context):
     row_count = 0
     table_name  = Path(file_name).stem.replace("_dataset", "")
     try:
-        cursor.execute(f"TRUNCATE TABLE raw.{table_name };")
+        cursor.execute(f"TRUNCATE TABLE raw.{table_name};")
 
         with open(file_path, "r") as f:
             cursor.copy_expert(
                 f"""
-                COPY raw.{table_name }
+                COPY raw.{table_name}
                 FROM STDIN
                 WITH CSV HEADER
                 """,
                 f
             )
 
-        cursor.execute(f"SELECT COUNT(*) FROM raw.{table_name };")
+        cursor.execute(f"SELECT COUNT(*) FROM raw.{table_name};")
         row_count = cursor.fetchone()[0]
         if row_count == 0:
             raise ValueError("Nenhuma linha inserida")
@@ -45,7 +45,7 @@ def ingest_with_logging(file_name, file_path, **context):
         logger.error(f"Falha, erro{e}")
         raise
     finally:
-        logger.info(f"Run de {execution_date} inseriu {row_count} linhas na tabela {table_name }.")
+        logger.info(f"Run de {execution_date} inseriu {row_count} linhas na tabela {table_name}.")
 
 
 default_args= {

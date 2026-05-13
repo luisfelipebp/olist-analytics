@@ -156,3 +156,11 @@ models:
         tests: [not_null, unique]
 
       - name: product_category_name_english
+
+  - name: stg_order_events
+    description: "Tabela de staging contendo eventos de pedidos consumidos do Redpanda/Kafka, incluindo informações do evento, pedido e metadados de ingestão."
+
+    columns:
+      - name: event_id
+        description: "Identificador único do evento."
+        tests: [not_null, unique]

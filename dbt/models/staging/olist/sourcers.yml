@@ -15,3 +15,8 @@ sources:
       - name: olist_order_payments
       - name: olist_order_reviews
       - name: product_category_name_translation
+  - name: streaming_olist 
+    database: "{{ env_var('DB_NAME') }}"
+    schema: streaming 
+    tables:
+      - name: olist_events

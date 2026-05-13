@@ -1,5 +1,12 @@
 # Olist Analytics — Plataforma de Data Engineering
 
+## Evolução da Arquitetura (Nova V2 Híbrida)
+
+O projeto evoluiu de uma pipeline puramente **Batch (V1)** para uma **Arquitetura Híbrida (Batch + Event-Driven)**. 
+Foi adicionado uma camada de ingestão em tempo real utilizando **Redpanda (Kafka-compatible)**, scripts produtores simulando microsserviços e um consumidor em micro-batch lidando com idempotência direta no PostgreSQL.
+
+**[Clique aqui para ler a documentação completa da V2, ver o diagrama do fluxo de mensageria e entender as decisões de engenharia (Trade-offs).](docs/CHANGELOG_v2.md)**
+
 > Pipeline de dados batch end-to-end sobre o maior dataset público de e-commerce brasileiro, construído com padrões de produção: ingestão idempotente, modelagem dimensional (Star Schema), transformações versionadas com dbt e visualização analítica via Metabase — 100% containerizado com Docker Compose.
 
 <br>
