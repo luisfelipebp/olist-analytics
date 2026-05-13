@@ -1,0 +1,13 @@
+olist_analytics:
+  target: dev
+
+  outputs:
+    dev:
+      type: postgres
+      host: pgdatabase
+      port: 5432
+      user: postgres
+      password: postgres
+      dbname: olist_db
+      schema: analytics
+      threads: 4

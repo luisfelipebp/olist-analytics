@@ -230,17 +230,33 @@ MB_DB_DBNAME=metabase_db
 
 ### 3. Suba o ambiente
 
+## Pré-requisitos
+
+Antes de executar o projeto, certifique-se de que os seguintes itens estão instalados e em execução:
+
+- Docker Desktop
+- Docker Compose
+- Python 3.11+
+
+Em ambientes Windows/WSL, é necessário iniciar o Docker Desktop antes de executar:
+
 ```bash
 docker compose up -d
 ```
 
 Na primeira execução, o Airflow precisa inicializar seu banco de metadados. Aguarde ~60s até todos os healthchecks passarem.
 
-### 4. Crie o usuário do Airflow
+## 4. Criar o usuário administrador do Airflow
+
+Acesse o container do Airflow:
 
 ```bash
 docker exec -it airflow_olist bash
+```
 
+Crie o usuário administrador:
+
+```bash
 airflow users create \
   --username admin \
   --firstname Admin \
@@ -250,16 +266,45 @@ airflow users create \
   --password admin
 ```
 
-### 5. Configure o dbt (perfil de conexão)
+Após a criação, acesse a interface do Airflow em:
+
+```text
+http://localhost:8080
+```
+
+---
+
+## 5. Configurar o perfil de conexão do dbt
+
+Dentro do container do Airflow, copie o arquivo de exemplo do perfil do dbt:
 
 ```bash
-# Dentro do container do Airflow
 cp /opt/airflow/dbt/profiles.yml.example ~/.dbt/profiles.yml
-
-# Edite o arquivo com as credenciais do olist_db
-# host: pgdatabase  (nome do serviço no Docker Compose)
-# database: olist_db
 ```
+
+Edite o arquivo `~/.dbt/profiles.yml` com as credenciais do PostgreSQL utilizadas no projeto.
+
+Exemplo de configuração:
+
+```yaml
+olist_analytics:
+  target: dev
+
+  outputs:
+    dev:
+      type: postgres
+      host: pgdatabase
+      port: 5432
+      user: postgres
+      password: postgres
+      dbname: olist_db
+      schema: analytics
+      threads: 4
+```
+
+> O host `pgdatabase` corresponde ao nome do serviço PostgreSQL definido no `docker-compose.yml`.
+
+---
 
 ### 6. Acesse as interfaces
 
