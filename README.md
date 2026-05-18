@@ -280,31 +280,31 @@ http://localhost:8081
 
 ## 5. Configurar o perfil de conexão do dbt
 
-Dentro do container do Airflow, copie o arquivo de exemplo do perfil do dbt:
+Entre no container do Airflow:
+
+```bash
+docker exec -it airflow_olist bash
+```
+
+Copie o arquivo de exemplo do perfil do dbt:
 
 ```bash
 cp /opt/airflow/dbt/profiles.yml.example /opt/airflow/dbt/profiles.yml
 ```
 
-Edite o arquivo `/opt/airflow/dbt/profiles.yml` com as credenciais do PostgreSQL utilizadas no projeto.
+O arquivo já vem configurado para utilizar as variáveis de ambiente definidas no projeto e conectar ao serviço PostgreSQL pgdatabase da rede Docker.
 
-```yaml
-olist_analytics:
-  target: dev
+Acesse a pasta do dbt:
 
-  outputs:
-    dev:
-      type: postgres
-      host: pgdatabase
-      port: 5432
-      user: "{{ env_var('DB_USER') }}"
-      password: "{{ env_var('DB_PASSWORD') }}"
-      dbname: "{{ env_var('DB_NAME') }}"
-      schema: public
-      threads: 4
+```bash
+cd /opt/airflow/dbt
 ```
 
-> O host `pgdatabase` corresponde ao nome do serviço PostgreSQL definido no `docker-compose.yml`.
+Instale as dependências do projeto:
+
+```bash
+dbt deps
+```
 
 ---
 
