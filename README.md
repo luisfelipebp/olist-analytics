@@ -212,18 +212,6 @@ Se estiver usando Windows CMD:
 ```bash
 copy .env.example .env
 ```
-
-Edite o `.env`:
-
-```env
-# PostgreSQL
-DB_USER=dataeng
-DB_PASSWORD=dataeng123
-DB_NAME=olist_db
-DB_PORT=5432
-
-# Metabase (banco separado para metadados do Metabase)
-MB_DB_DBNAME=metabase_db
 ```
 
 > O `init.sql` em `init-scripts/` criará automaticamente os bancos `airflow_db` e `metabase_db` na primeira inicialização do Postgres, além dos schemas `raw`, `staging` e `marts` dentro de `olist_db`.
