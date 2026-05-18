@@ -212,7 +212,6 @@ Se estiver usando Windows CMD:
 ```bash
 copy .env.example .env
 ```
-```
 
 > O `init.sql` em `init-scripts/` criará automaticamente os bancos `airflow_db` e `metabase_db` na primeira inicialização do Postgres, além dos schemas `raw`, `staging` e `marts` dentro de `olist_db`.
 
