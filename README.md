@@ -257,6 +257,10 @@ docker exec -it airflow_olist bash
 Crie o usuário administrador:
 
 ```bash
+airflow users delete --username admin
+```
+
+```bash
 airflow users create \
   --username admin \
   --firstname Admin \
@@ -269,7 +273,7 @@ airflow users create \
 Após a criação, acesse a interface do Airflow em:
 
 ```text
-http://localhost:8080
+http://localhost:8081
 ```
 
 ---
@@ -279,12 +283,10 @@ http://localhost:8080
 Dentro do container do Airflow, copie o arquivo de exemplo do perfil do dbt:
 
 ```bash
-cp /opt/airflow/dbt/profiles.yml.example ~/.dbt/profiles.yml
+cp /opt/airflow/dbt/profiles.yml.example /opt/airflow/dbt/profiles.yml
 ```
 
-Edite o arquivo `~/.dbt/profiles.yml` com as credenciais do PostgreSQL utilizadas no projeto.
-
-Exemplo de configuração:
+Edite o arquivo `/opt/airflow/dbt/profiles.yml` com as credenciais do PostgreSQL utilizadas no projeto.
 
 ```yaml
 olist_analytics:
@@ -295,10 +297,10 @@ olist_analytics:
       type: postgres
       host: pgdatabase
       port: 5432
-      user: postgres
-      password: postgres
-      dbname: olist_db
-      schema: analytics
+      user: "{{ env_var('DB_USER') }}"
+      password: "{{ env_var('DB_PASSWORD') }}"
+      dbname: "{{ env_var('DB_NAME') }}"
+      schema: public
       threads: 4
 ```
 

@@ -6,8 +6,8 @@ olist_analytics:
       type: postgres
       host: pgdatabase
       port: 5432
-      user: postgres
-      password: postgres
+      user: dataeng
+      password: dataeng123
       dbname: olist_db
-      schema: analytics
+      schema: public
       threads: 4
